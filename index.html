@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="/CDN/FAVICON/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/CDN/FAVICON/favicon.svg" />
+    <link rel="shortcut icon" href="/CDN/FAVICON/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/CDN/FAVICON/apple-touch-icon.png" />
+    <link rel="manifest" href="/CDN/FAVICON/site.webmanifest" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RIVERCHECK</title>
@@ -102,7 +107,7 @@
             }
         }
     </style>
-        <meta property="og:title" content="RIVERCHECK">
+    <meta property="og:title" content="RIVERCHECK">
     <meta property="og:description" content="SUBSCRIBE TO THE RIVERCHECK NEWSLETTER">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://rivercheck.org">
@@ -115,18 +120,18 @@
         async function submitForm(event) {
             event.preventDefault();
             const email = event.target.email.value;
-            const webhookUrl = "https://discord.com/api/webhooks/1337119191433482322/ATXx2epdMbjxDWWSUvlbq7nPBYpJ2lEVgOv7Jjbu8rS17sNQayJk-TCzFW0oyksg9YyK";
-            const payload = {
-                content: `New subscription: ${email}`
-            };
             const messageElement = document.getElementById('message');
             try {
-                const response = await fetch(webhookUrl, {
+                const response = await fetch('https://api.github.com/repos/RIVERCHECK/WEBSITE/issues', {
                     method: 'POST',
                     headers: {
+                        'Authorization': `token ${secrets.CUHSY_GITHUB_TOKEN}`, // This will be handled by GitHub Actions
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify({
+                        title: `New subscription: ${email}`,
+                        body: `Please add this email to the subscription list: ${email}`
+                    })
                 });
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
