@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RIVERCHECK</title>
+    <style>
+        @font-face {
+            font-family: 'Teko';
+            src: url('Teko-Bold.ttf') format('truetype');
+            font-weight: bold;
+        }
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1a1a1a;
+            font-family: 'Teko', sans-serif;
+            font-weight: bold;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform: scale(0.9);
+            transform-origin: center;
+        }
+        .container img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+        }
+        .container .title {
+            margin: 20px 0;
+            font-size: 8em;
+            font-weight: normal;
+        }
+        .container form {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        .container input[type="email"] {
+            padding: 15px;
+            font-size: 1.8em;
+            border: 2px solid white;
+            background-color: transparent;
+            border-radius: 5px 0 0 5px;
+            margin-bottom: 0;
+            color: white;
+            flex-grow: 1;
+            font-family: 'Teko', sans-serif;
+        }
+        .container input[type="submit"] {
+            padding: 15px 30px;
+            font-size: 1.8em;
+            border: 2px solid white;
+            background-color: transparent;
+            border-radius: 0 5px 5px 0;
+            color: white;
+            cursor: pointer;
+            margin-left: -2px;
+            font-family: 'Teko', sans-serif;
+        }
+        .message {
+            margin-top: 10px;
+            font-size: 2em;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .message.show {
+            opacity: 1;
+        }
+        @media (max-width: 600px), (max-height: 800px) {
+            .container {
+                transform: scale(0.75);
+            }
+        }
+        @media (max-width: 500px), (max-height: 700px) {
+            .container {
+                transform: scale(0.65);
+            }
+        }
+        @media (max-width: 400px), (max-height: 600px) {
+            .container {
+                transform: scale(0.55);
+            }
+        }
+        @media (max-width: 300px), (max-height: 500px) {
+            .container {
+                transform: scale(0.45);
+            }
+        }
+        @media (max-width: 200px), (max-height: 400px) {
+            .container {
+                transform: scale(0.25);
+            }
+        }
+    </style>
+    <meta property="og:title" content="RIVERCHECK">
+    <meta property="og:description" content="SUBSCRIBE TO THE RIVERCHECK NEWSLETTER">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://rivercheck.org">
+    <meta property="og:image" content="https://rivercheck.org/CDN/MEDIA/RIVERCHECKMETA.png">
+    <meta property="og:site_name" content="RIVERCHECK">
+    <meta name="theme-color" content="#FFFFFF">
+    <script>
+        async function submitForm(event) {
+            event.preventDefault();
+            const email = event.target.email.value;
+            const webhookUrl = "https://discord.com/api/webhooks/1337119191433482322/ATXx2epdMbjxDWWSUvlbq7nPBYpJ2lEVgOv7Jjbu8rS17sNQayJk-TCzFW0oyksg9YyK";
+            const payload = {
+                content: `New subscription: ${email}`
+            };
+            const messageElement = document.getElementById('message');
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                messageElement.textContent = 'SUBSCRIPTION SUCCESSFUL';
+                messageElement.style.color = 'green';
+                messageElement.classList.add('show');
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+                messageElement.textContent = 'SUBSCRIPTION FAILED';
+                messageElement.style.color = 'red';
+                messageElement.classList.add('show');
+            }
+        }
+
+        function clearMessage() {
+            const messageElement = document.getElementById('message');
+            messageElement.textContent = '';
+            messageElement.classList.remove('show');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <img src="RIVERCHECK.png" alt="RIVERCHECK">
+        <div class="title">RIVERCHECK</div>
+        <form onsubmit="submitForm(event)">
+            <input type="email" name="email" placeholder="E-MAIL ADDRESS" required oninput="clearMessage()">
+            <input type="submit" value="SUBSCRIBE">
+        </form>
+        <div id="message" class="message"></div>
+    </div>
+</body>
+</html>
