@@ -10,13 +10,15 @@ async function appendEmailToSheet(email) {
 
   const client = await auth.getClient();
 
+  const currentDate = new Date().toISOString(); // Get the current date in ISO format
+
   await sheets.spreadsheets.values.append({
     auth: client,
     spreadsheetId: SPREADSHEET_ID,
-    range: 'Sheet1!A:A',
+    range: 'Sheet1!A:B', // Append to columns A and B
     valueInputOption: 'RAW',
     resource: {
-      values: [[email]],
+      values: [[email, currentDate]], // Append email and current date
     },
   });
 }

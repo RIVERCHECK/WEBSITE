@@ -22,11 +22,11 @@ jobs:
 
       - name: Extract email from issue
         id: extract-email
-        run: echo "::set-output name=email::$(echo '${{ github.event.issue.title }}' | sed 's/New subscription: //')"
+        run: echo "EMAIL=$(echo '${{ github.event.issue.title }}' | sed 's/New subscription: //')" >> $GITHUB_ENV
 
       - name: Run script to add email to Google Sheets
         env:
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
           SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
-          EMAIL_TO_ADD: ${{ steps.extract-email.outputs.email }}
+          EMAIL_TO_ADD: ${{ env.EMAIL }}
         run: node scripts/add-email-to-sheets.js
